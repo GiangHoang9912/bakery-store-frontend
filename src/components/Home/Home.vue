@@ -44,7 +44,6 @@ onMounted(() => {
 <style scoped>
 #carouselExampleControls {
   width: 100vw;
-  height: auto;
 }
 
 .carousel-inner {
@@ -57,6 +56,6 @@ onMounted(() => {
 
 .carousel-item img {
   width: 100vw;
-  object-fit: cover;
+  height: 82.85vh;
 }
 </style>
