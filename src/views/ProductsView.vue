@@ -1,10 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import Home from '../components/Home/Home.vue'
+import Products from '../components/Products/Products.vue'
 </script>
 
 <template>
   <main>
-    <Home />
+    <Products />
   </main>
 </template>
