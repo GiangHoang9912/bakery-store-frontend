@@ -56,6 +56,6 @@ onMounted(() => {
 
 .carousel-item img {
   width: 100vw;
-  height: 82.85vh;
+  height: 85vh;
 }
 </style>

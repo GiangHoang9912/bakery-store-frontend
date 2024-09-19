@@ -25,7 +25,7 @@ import { RouterLink, RouterView } from 'vue-router'
 <style scoped>
 header {
   background-color: #BC9669;
-  height: 155px;
+  height: 15vh;
 }
 
 #store-name {
