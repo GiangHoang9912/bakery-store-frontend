@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-const submitForm = () => {
-  // Handle form submission
-  console.log('Form submitted');
+const goToHomePage = () => {
+  // Xử lý logic chuyển về trang chủ
+  console.log('Chuyển về trang chủ');
 }
 </script>
 
@@ -10,18 +10,16 @@ const submitForm = () => {
   <div class="contact-container">
     <h1 class="contact-title">CONTACT US</h1>
     <div class="contact-content">
-      <div class="contact-text">
+      <div class="contact-info">
         <p>Our shop would be delighted to assist as you discover Thùy Phạm Mooncake and its products.</p>
         <p>You may contact our Customer Service by call on .</p>
         <p>Service available from Monday to Saturday from 9 am to 9 pm and Sunday 11am - 7pm.</p>
       </div>
-      <form class="contact-form" @submit.prevent="submitForm">
-        <input type="text" placeholder="Họ tên" />
-        <input type="email" placeholder="Email" />
-        <input type="tel" placeholder="Số điện thoại" />
-        <textarea placeholder="Note"></textarea>
-        <button type="submit">Gửi</button>
-      </form>
+      <div class="contact-success">
+        <p>Yêu cầu của quý khách đã được gửi thành công !</p>
+        <p></p>
+        <button @click="goToHomePage" class="home-button">QUAY VỀ TRANG CHỦ</button>
+      </div>
     </div>
   </div>
 </template>
@@ -43,42 +41,28 @@ const submitForm = () => {
 
 .contact-content {
   display: flex;
+  justify-content: space-between;
   gap: 40px;
 }
 
-.contact-text {
+.contact-info,
+.contact-success {
   flex: 1;
 }
 
-.contact-form {
-  flex: 1;
+.contact-success {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  align-items: flex-end;
 }
 
-input,
-textarea,
-button {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-textarea {
-  height: 100px;
-  resize: vertical;
-}
-
-button {
+.home-button {
   background-color: #8b572a;
   color: white;
   border: none;
-  cursor: pointer;
-  align-self: flex-end;
-  width: auto;
   padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
 }
 </style>
