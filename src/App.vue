@@ -7,10 +7,10 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="contact">
       <p>19001009</p>
       <p>darlith@gmail.com</p>
-      <button>Đăng nhập</button>
-      <button>Đăng ký</button>
+      <RouterLink class="router-link" to="/login">Đăng nhập</RouterLink>
+      <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
     </div>
-    <nav>
+    <nav class="menu">
       <RouterLink class="router-link" id="store-name" to="/">Thùy Phạm mooncake</RouterLink>
       <RouterLink class="router-link" to="/">Trang chủ</RouterLink>
       <RouterLink class="router-link" to="/products">Sản phẩm</RouterLink>
@@ -53,9 +53,22 @@ nav a {
 
 .contact p {
   margin: 0 1rem;
+  color: #000;
+  text-decoration: none;
 }
 
 .router-link {
   font-size: 1.25rem;
+  text-decoration: none;
+  color: #000;
+}
+
+.contact .router-link {
+  margin: 0 1rem;
+  font-size: 1rem;
+}
+
+.menu .router-link {
+  padding-bottom: 1rem;
 }
 </style>

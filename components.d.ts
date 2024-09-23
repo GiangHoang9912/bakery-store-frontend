@@ -16,8 +16,10 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    Login: typeof import('./src/components/Login/Login.vue')['default']
     Orders: typeof import('./src/components/Orders/Orders.vue')['default']
     Products: typeof import('./src/components/Products/Products.vue')['default']
+    Register: typeof import('./src/components/Register/Register.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
