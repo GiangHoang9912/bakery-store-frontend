@@ -10,6 +10,7 @@ declare module 'vue' {
     BCarousel: typeof import('bootstrap-vue-next/components/BCarousel')['BCarousel']
     BCarouselSlide: typeof import('bootstrap-vue-next/components/BCarousel')['BCarouselSlide']
     Contact: typeof import('./src/components/Contact/Contact.vue')['default']
+    ContactComplete: typeof import('./src/components/ContactComplete/ContactComplete.vue')['default']
     Home: typeof import('./src/components/Home/Home.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']

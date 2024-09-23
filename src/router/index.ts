@@ -5,6 +5,7 @@ import OrdersView from "../views/OrdersView.vue";
 import ContactView from "../views/ContactView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import ContactCompleteView from "../views/ContactCompleteView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       path: "/contact",
       name: "contact",
       component: ContactView,
+    },
+    {
+      path: "/contact-complete",
+      name: "contact-complete",
+      component: ContactCompleteView,
     },
     {
       path: "/login",
