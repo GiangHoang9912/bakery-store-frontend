@@ -6,6 +6,15 @@ import ContactView from "../views/ContactView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import ContactCompleteView from "../views/ContactCompleteView.vue";
+import SearchResultsView from "@/views/SearchResultsView.vue";
+import OrderDetailsView from "@/views/OrderDetailsView.vue";
+import CustomerAccountView from "@/views/CustomerAccountView.vue";
+import ShoppingCartView from "@/views/ShoppingCartView.vue";
+import PaymentConfirmationView from "@/views/PaymentConfirmation.vue";
+import ResetPasswordView from "@/views/ResetPassword.vue";
+import CustomersView from "@/views/CustomerView.vue";
+import ProductManagementView from "@/views/ProductManagementView.vue";
+import OrderManagementView from "@/views/OrderManagementView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +54,52 @@ const router = createRouter({
       name: "register",
       component: RegisterView
     },
+    {
+      path: "/search-results",
+      name: "search-results",
+      component: SearchResultsView
+    },
+    {
+      path: "/order-details",
+      name: "order-details",
+      component: OrderDetailsView
+    },
+    {
+      path: "/customer-account",
+      name: "customer-account",
+      component: CustomerAccountView
+    },
+    {
+      path: "/shopping-cart",
+      name: "shopping-cart",
+      component: ShoppingCartView
+    },
+    {
+      path: "/payment-confirmation",
+      name: "payment-confirmation",
+      component: PaymentConfirmationView
+    },
+    {
+      path: "/reset-password",
+      name: "reset-password",
+      component: ResetPasswordView
+    },
+    {
+      path: "/customers",
+      name: "customers",
+      component: CustomersView
+    },
+    {
+      path: "/product-management",
+      name: "product-management",
+      component: ProductManagementView
+    },
+    {
+      path: "/order-management",
+      name: "order-management",
+      component: OrderManagementView
+    },
+    
 
   ],
 });
