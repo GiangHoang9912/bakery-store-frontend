@@ -15,6 +15,7 @@ import ResetPasswordView from '@/views/ResetPassword.vue'
 import CustomersView from '@/views/CustomerView.vue'
 import ProductManagementView from '@/views/ProductManagementView.vue'
 import OrderManagementView from '@/views/OrderManagementView.vue'
+import ContactManagementView from '@/views/ContactManagementView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -99,6 +100,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'order-management',
     component: OrderManagementView,
     meta: { requiresAdmin: true }
+  },
+  {
+    path: '/contact-management',
+    name: 'contact-management',
+    component: ContactManagementView
   }
 ]
 
@@ -111,7 +117,10 @@ router.beforeEach((to, from, next) => {
   const userString = localStorage.getItem('user')
 
   const user = userString ? JSON.parse(userString) : null
-  console.log("requiresAdmin", to.matched.some((record) => record.meta.requiresAdmin))
+  console.log(
+    'requiresAdmin',
+    to.matched.some((record) => record.meta.requiresAdmin)
+  )
   if (to.matched.some((record) => record.meta.requiresAdmin)) {
     if (user && Number(user.role) === 0) {
       next()
