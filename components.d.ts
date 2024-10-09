@@ -9,10 +9,9 @@ declare module 'vue' {
   export interface GlobalComponents {
     Contact: typeof import('./src/components/Contact/Contact.vue')['default']
     ContactComplete: typeof import('./src/components/ContactComplete/ContactComplete.vue')['default']
-    copy: typeof import('./src/components/SearchResults/SearchResults copy.vue')['default']
+    ContactManagement: typeof import('./src/components/ContactManagement/ContactManagement.vue')['default']
     CustomerAccount: typeof import('./src/components/CustomerAccount/CustomerAccount.vue')['default']
     Customers: typeof import('./src/components/Customers/Customers.vue')['default']
-    EditCustomer: typeof import('./src/components/ProductManagement/EditCustomer.vue')['default']
     Home: typeof import('./src/components/Home/Home.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
@@ -30,7 +29,6 @@ declare module 'vue' {
     ResetPassword: typeof import('./src/components/ResetPassword/ResetPassword.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SearchOrders: typeof import('./src/components/SearchOrders/SearchOrders.vue')['default']
     SearchResults: typeof import('./src/components/SearchResults/SearchResults.vue')['default']
     ShoppingCart: typeof import('./src/components/ShoppingCart/ShoppingCart.vue')['default']
   }
