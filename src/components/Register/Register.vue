@@ -4,10 +4,6 @@
     <h2>Đăng ký</h2>
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <input type="text" id="username" v-model="form.username" required placeholder="Tên tài khoản" />
-      </div>
-
-      <div class="form-group">
         <input type="text" id="fullname" v-model="form.fullname" required placeholder="Họ tên" />
       </div>
 
@@ -35,9 +31,12 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const form = reactive({
-  username: '',
   fullname: '',
   phone: '',
   email: '',
@@ -45,13 +44,28 @@ const form = reactive({
   confirmPassword: ''
 })
 
-const onSubmit = () => {
+const onSubmit = async (e: Event) => {
+  e.preventDefault();
   if (form.password !== form.confirmPassword) {
     alert('Mật khẩu không khớp!')
     return
   }
-  console.log('Form submitted', form)
-  // Xử lý đăng kí ở đây
+
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/register`, {
+      email: form.email,
+      password: form.password,
+      fullname: form.fullname,
+      phone: form.phone
+    })
+    console.log('Đăng ký thành công:', response.data)
+    // Xử lý sau khi đăng ký thành công (ví dụ: chuyển hướng đến trang đăng nhập)
+    // Chuyển hướng đến trang đăng nhập sau khi đăng ký thành công
+    router.push('/login');
+  } catch (error) {
+    console.error('Lỗi đăng ký:', error)
+    alert('Đăng ký thất bại. Vui lòng thử lại.')
+  }
 }
 </script>
 

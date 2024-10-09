@@ -1,5 +1,36 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import emitter from './eventBus'
+
+const isLoggedIn = ref(false)
+const fullname = ref('')
+const router = useRouter()
+
+onMounted(() => {
+  checkLoginStatus()
+  emitter.on('login', checkLoginStatus)
+})
+
+function checkLoginStatus() {
+  const userString = localStorage.getItem('user')
+  if (userString) {
+    const user = JSON.parse(userString)
+    isLoggedIn.value = true
+    fullname.value = user.fullname
+  } else {
+    isLoggedIn.value = false
+    fullname.value = ''
+  }
+}
+
+function logout() {
+  localStorage.removeItem('user')
+  isLoggedIn.value = false
+  fullname.value = ''
+  router.push('/')
+}
 </script>
 
 <template>
@@ -7,8 +38,15 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="contact">
       <p>19001009</p>
       <p>darlith@gmail.com</p>
-      <RouterLink class="router-link" to="/login">Đăng nhập</RouterLink>
-      <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
+      <template v-if="!isLoggedIn">
+        <RouterLink class="router-link" to="/login">Đăng nhập</RouterLink>
+        <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
+      </template>
+      <template v-else>
+        <span class="user-info">{{ fullname }}</span>
+        <RouterLink class="router-link" to="/order-details">Giỏ hàng</RouterLink>
+        <a href="#" class="router-link" @click.prevent="logout">Đăng xuất</a>
+      </template>
     </div>
     <nav class="menu">
       <RouterLink class="router-link" id="store-name" to="/">Thùy Phạm mooncake</RouterLink>
@@ -70,5 +108,11 @@ nav a {
 
 .menu .router-link {
   padding-bottom: 1rem;
+}
+
+.user-info {
+  margin: 0 1rem;
+  font-size: 1rem;
+  color: #000;
 }
 </style>
