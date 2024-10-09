@@ -1,14 +1,54 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+import emitter from '../../eventBus';
+
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const router = useRouter();
+
+const login = async (e: Event) => {
+  e.preventDefault();
+  try {
+    console.log(email.value, password.value);
+    const response = await axios.post('http://127.0.0.1:8080/api/auth/login', {
+      email: email.value,
+      password: password.value,
+    });
+
+    console.log(response.data);
+
+    if (response.status === 200) {
+      const { token, role, fullname, email, phone } = response.data;
+      // Store user info in localStorage
+      localStorage.setItem('user', JSON.stringify({
+        token,
+        role,
+        fullname,
+        email,
+        phone,
+      }));
+      emitter.emit('login'); // Emit login event
+      router.push('/');
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    errorMessage.value = 'Invalid email or password';
+  }
+};
 </script>
 
 <template>
   <div class="login-container">
     <h2>Đăng nhập</h2>
     <form action="#">
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Mật khẩu" required>
-      <button type="submit">Đăng nhập</button>
+      <input v-model="email" type="email" placeholder="Email" required>
+      <input v-model="password" type="password" placeholder="Mật khẩu" required>
+      <!-- <button type="submit">Đăng nhập</button> -->
+      <button @click="login">Đăng nhập</button>
     </form>
     <a href="#">Quên mật khẩu?</a>
     <a href="#">Đăng kí tài khoản</a>
