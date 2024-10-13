@@ -15,6 +15,7 @@ import ResetPasswordView from '@/views/ResetPassword.vue'
 import CustomersView from '@/views/CustomerView.vue'
 import ProductManagementView from '@/views/ProductManagementView.vue'
 import OrderManagementView from '@/views/OrderManagementView.vue'
+import ContactUsManagementView from '@/views/ContactUsManagementView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -83,21 +84,27 @@ const routes: Array<RouteRecordRaw> = [
     component: ResetPasswordView
   },
   {
-    path: '/customers',
-    name: 'customers',
+    path: '/manage-accounts',
+    name: 'manage-accounts',
     component: CustomersView,
     meta: { requiresAdmin: true }
   },
   {
-    path: '/product-management',
-    name: 'product-management',
+    path: '/manage-products',
+    name: 'manage-products',
     component: ProductManagementView,
     meta: { requiresAdmin: true }
   },
   {
-    path: '/order-management',
-    name: 'order-management',
+    path: '/manage-orders',
+    name: 'manage-orders',
     component: OrderManagementView,
+    meta: { requiresAdmin: true }
+  },
+  {
+    path: '/manage-contacts-us',
+    name: 'manage-contacts-us',
+    component: ContactUsManagementView,
     meta: { requiresAdmin: true }
   }
 ]

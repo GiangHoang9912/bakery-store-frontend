@@ -6,6 +6,7 @@ import emitter from './eventBus'
 
 const isLoggedIn = ref(false)
 const fullname = ref('')
+const isAdmin = ref(false)
 const router = useRouter()
 
 onMounted(() => {
@@ -17,11 +18,15 @@ function checkLoginStatus() {
   const userString = localStorage.getItem('user')
   if (userString) {
     const user = JSON.parse(userString)
+    console.log(user)
+
     isLoggedIn.value = true
     fullname.value = user.fullname
+    isAdmin.value = Number(user.role) === 0
   } else {
     isLoggedIn.value = false
     fullname.value = ''
+    isAdmin.value = false
   }
 }
 
@@ -50,10 +55,18 @@ function logout() {
     </div>
     <nav class="menu">
       <RouterLink class="router-link" id="store-name" to="/">Thùy Phạm mooncake</RouterLink>
-      <RouterLink class="router-link" to="/">Trang chủ</RouterLink>
-      <RouterLink class="router-link" to="/products">Sản phẩm</RouterLink>
-      <RouterLink class="router-link" to="/orders">Đơn hàng</RouterLink>
-      <RouterLink class="router-link" to="/contact">Liên hệ</RouterLink>
+      <template v-if="!isAdmin">
+        <RouterLink class="router-link" to="/">Trang chủ</RouterLink>
+        <RouterLink class="router-link" to="/products">Sản phẩm</RouterLink>
+        <RouterLink class="router-link" to="/orders">Đơn hàng</RouterLink>
+        <RouterLink class="router-link" to="/contact">Liên hệ</RouterLink>
+      </template>
+      <template v-else>
+        <RouterLink class="router-link" to="/manage-accounts">Quản lý tài khoản</RouterLink>
+        <RouterLink class="router-link" to="/manage-products">Quản lý sản phẩm</RouterLink>
+        <RouterLink class="router-link" to="/manage-orders">Quản lý đơn hàng</RouterLink>
+        <RouterLink class="router-link" to="/manage-contacts-us">Quản lý liên hệ</RouterLink>
+      </template>
     </nav>
   </header>
 

@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Contact: typeof import('./src/components/Contact/Contact.vue')['default']
     ContactComplete: typeof import('./src/components/ContactComplete/ContactComplete.vue')['default']
+    ContactUsManagement: typeof import('./src/components/ContactUsManagement/ContactUsManagement.vue')['default']
     copy: typeof import('./src/components/SearchResults/SearchResults copy.vue')['default']
     CustomerAccount: typeof import('./src/components/CustomerAccount/CustomerAccount.vue')['default']
     Customers: typeof import('./src/components/Customers/Customers.vue')['default']
