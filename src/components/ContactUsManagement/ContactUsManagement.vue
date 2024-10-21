@@ -26,7 +26,7 @@ const fetchContacts = async () => {
     });
     console.log(response.data);
     contacts.value = response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     if (error.response && error.response.status === 403) {
       console.log('Lỗi quyền truy cập: Người dùng không có quyền xem danh sách liên hệ');
