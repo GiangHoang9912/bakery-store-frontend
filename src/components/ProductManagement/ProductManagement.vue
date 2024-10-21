@@ -181,6 +181,10 @@ const handleFileUpload = (event: Event, isEditing: boolean) => {
   }
 };
 
+const formatCurrency = (value: number) => {
+  return value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+};
+
 onMounted(() => {
   fetchProducts();
 });
@@ -212,7 +216,7 @@ onMounted(() => {
               <img :src="product.imageUrl" alt="Hình ảnh sản phẩm" class="product-image" />
             </td>
             <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
+            <td>{{ formatCurrency(product.price) }}</td>
             <td>{{ new Date(product.createdAt).toLocaleString() }}</td>
             <td>{{ new Date(product.updatedAt).toLocaleString() }}</td>
             <td>
@@ -488,3 +492,4 @@ onMounted(() => {
   border-radius: 5px;
 }
 </style>
+
