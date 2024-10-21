@@ -1,45 +1,43 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
-// Sample product data
-const products = ref([
-  {
-    id: 1,
-    name: "Bánh nướng thập cẩm",
-    price: "80.000",
-    image: "https://via.placeholder.com/150",
-    quantity: 0
-  },
-  {
-    id: 2,
-    name: "Bánh nướng trứng muối thập cẩm",
-    price: "80.000",
-    image: "https://via.placeholder.com/150",
-    quantity: 0
-  },
-  {
-    id: 3,
-    name: "Bánh nướng đậu xanh trứng muối",
-    price: "80.000",
-    image: "https://via.placeholder.com/150",
-    quantity: 0
-  },
-  {
-    id: 4,
-    name: "Bánh nướng hạt sen trứng muối",
-    price: "80.000",
-    image: "https://via.placeholder.com/150",
-    quantity: 0
-  },
-]);
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+}
+
+const products = ref<Product[]>([]);
+
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+};
+
+const fetchProducts = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/products');
+    products.value = response.data.map((product: any) => ({
+      ...product,
+      quantity: 0,
+      formattedPrice: formatPrice(product.price),
+    }));
+  } catch (error) {
+    console.error('Lỗi khi tải sản phẩm:', error);
+  }
+};
+
+onMounted(fetchProducts);
 
 // Increase or decrease quantity
-const increaseQuantity = (product) => {
+const increaseQuantity = (product: Product) => {
   product.quantity++;
 };
 
-const decreaseQuantity = (product) => {
+const decreaseQuantity = (product: Product) => {
   if (product.quantity > 0) product.quantity--;
 };
 </script>
@@ -49,9 +47,9 @@ const decreaseQuantity = (product) => {
     <h2>BÁNH TRUNG THU TRUYỀN THỐNG</h2>
     <div class="product-list">
       <div v-for="product in products" :key="product.id" class="product-item">
-        <img :src="product.image" :alt="product.name" />
+        <img :src="product.imageUrl" :alt="product.name" />
         <p>{{ product.name }}</p>
-        <p>{{ product.price }}</p>
+        <p>{{ product.formattedPrice }}</p>
         <div class="quantity-control">
           <span>Số lượng:</span>
           <button @click="decreaseQuantity(product)">-</button>
@@ -60,12 +58,12 @@ const decreaseQuantity = (product) => {
         </div>
       </div>
     </div>
-    <div class="pagination">
+    <!-- <div class="pagination">
       <span>1</span>
       <span>2</span>
       <span>3</span>
       <span>...</span>
-    </div>
+    </div> -->
   </div>
 </template>
 

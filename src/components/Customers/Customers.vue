@@ -157,13 +157,13 @@ onMounted(() => {
         </tbody>
       </table>
 
-      <div class="pagination">
+      <!-- <div class="pagination">
         <button class="page-btn">1</button>
         <button class="page-btn">2</button>
         <button class="page-btn">3</button>
         <span>...</span>
         <button class="page-btn next-btn">&gt;</button>
-      </div>
+      </div> -->
     </main>
   </div>
 
