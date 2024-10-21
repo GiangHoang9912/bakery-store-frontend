@@ -7,16 +7,26 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+interface NewProduct {
+  name?: string;
+  price?: number;
+  image?: string;
 }
 
 const products = ref<Product[]>([]);
 const editingProduct = ref<Product | null>(null);
 const showEditPopup = ref(false);
 const showAddPopup = ref(false);
-const newProduct = ref({ name: '', price: 0 });
+const newProduct = ref<NewProduct | null>(null);
 const loading = ref(false);
+const newProductName = ref('');
+const newProductPrice = ref<number | null>(null);
+const newProductImage = ref(''); // Thêm dòng này
 
 const fetchProducts = async () => {
   loading.value = true;
@@ -30,7 +40,7 @@ const fetchProducts = async () => {
     });
     console.log(response.data);
     products.value = response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     if (error.response && error.response.status === 403) {
       console.log('Lỗi quyền truy cập: Người dùng không có quyền xem danh sách sản phẩm');
@@ -56,11 +66,18 @@ const saveProductChanges = async () => {
   try {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const token = user.token;
+    const formData = new FormData();
+    formData.append('name', editingProduct.value.name);
+    formData.append('price', editingProduct.value.price.toString());
+    if (editingProduct.value.image) {
+      formData.append('image', editingProduct.value.image);
+    }
     await axios.put(`${import.meta.env.VITE_API_BASE_URL}/products/${editingProduct.value.id}`,
-      { name: editingProduct.value.name, price: editingProduct.value.price },
+      formData,
       {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
       }
     );
@@ -96,7 +113,7 @@ const deleteProduct = async (productId: number) => {
       products.value = products.value.filter(p => p.id !== productId);
       alert('Xóa sản phẩm thành công');
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Lỗi khi xóa sản phẩm:', error);
     if (error.response && error.response.status === 403) {
       alert('Bạn không có quyền xóa sản phẩm này');
@@ -114,7 +131,7 @@ const openAddPopup = () => {
 
 const closeAddPopup = () => {
   showAddPopup.value = false;
-  newProduct.value = { name: '', price: 0 };
+  newProduct.value = null;
 };
 
 const addNewProduct = async () => {
@@ -122,11 +139,18 @@ const addNewProduct = async () => {
   try {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const token = user.token;
+    const formData = new FormData();
+    formData.append('name', newProductName.value);
+    formData.append('price', newProductPrice.value?.toString() || '');
+    if (newProductImage.value) {
+      formData.append('image', newProductImage.value);
+    }
     const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/products`,
-      newProduct.value,
+      formData,
       {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
       }
     );
@@ -138,6 +162,22 @@ const addNewProduct = async () => {
     alert('Có lỗi xảy ra khi thêm sản phẩm mới');
   } finally {
     loading.value = false;
+  }
+};
+
+const handleFileUpload = (event: Event, isEditing: boolean) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    const file = target.files[0];
+    if (file.size > 10 * 1024 * 1024) { // 10MB
+      alert('Kích thước tệp quá lớn. Vui lòng chọn tệp nhỏ hơn 10MB.');
+      return;
+    }
+    if (isEditing && editingProduct.value) {
+      editingProduct.value.image = file;
+    } else {
+      newProductImage.value = file;
+    }
   }
 };
 
@@ -157,6 +197,7 @@ onMounted(() => {
         <thead>
           <tr>
             <th>ID</th>
+            <th>HÌNH ẢNH</th>
             <th>TÊN SẢN PHẨM</th>
             <th>GIÁ</th>
             <th>NGÀY TẠO</th>
@@ -167,6 +208,9 @@ onMounted(() => {
         <tbody>
           <tr v-for="product in products" :key="product.id">
             <td>{{ product.id }}</td>
+            <td>
+              <img :src="product.imageUrl" alt="Hình ảnh sản phẩm" class="product-image" />
+            </td>
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
             <td>{{ new Date(product.createdAt).toLocaleString() }}</td>
@@ -198,7 +242,9 @@ onMounted(() => {
     <div class="edit-popup-content">
       <h3>Chỉnh sửa thông tin sản phẩm</h3>
       <input v-model="editingProduct.name" placeholder="Tên sản phẩm" />
-      <input v-model="editingProduct.price" type="number" placeholder="Giá sản phẩm" />
+      <input v-model.number="editingProduct.price" type="number" placeholder="Giá sản phẩm" />
+      <input type="file" @change="(e) => handleFileUpload(e, true)" accept="image/*" />
+      <img v-if="editingProduct.image" :src="typeof editingProduct.image === 'string' ? editingProduct.imageUrl : URL.createObjectURL(editingProduct.image)" alt="Product image" class="preview-image" />
       <div class="button-group">
         <button @click="closeEditPopup">Đóng</button>
         <button @click="saveProductChanges">Lưu</button>
@@ -210,8 +256,10 @@ onMounted(() => {
   <div v-if="showAddPopup" class="add-popup">
     <div class="add-popup-content">
       <h3>Thêm sản phẩm mới</h3>
-      <input v-model="newProduct.name" placeholder="Tên sản phẩm" />
-      <input v-model="newProduct.price" type="number" placeholder="Giá sản phẩm" />
+      <input v-model="newProductName" placeholder="Tên sản phẩm" />
+      <input v-model.number="newProductPrice" type="number" placeholder="Giá sản phẩm" />
+      <input type="file" @change="(e) => handleFileUpload(e, false)" accept="image/*" />
+      <img v-if="newProductImage" :src="URL.createObjectURL(newProductImage)" alt="Product image" class="preview-image" />
       <div class="button-group">
         <button @click="closeAddPopup">Đóng</button>
         <button @click="addNewProduct">Thêm</button>
@@ -418,7 +466,25 @@ onMounted(() => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  margin-top: 10px;
+}
+
+.product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 </style>
