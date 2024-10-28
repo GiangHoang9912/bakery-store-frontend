@@ -11,7 +11,7 @@ const goToHomePage = () => {
     <h1 class="contact-title">CONTACT US</h1>
     <div class="contact-content">
       <div class="contact-info">
-        <p>Our shop would be delighted to assist as you discover Thùy Phạm Mooncake and its products.</p>
+        <p>Our shop would be delighted to assist as you discover Linh Anh Mooncake and its products.</p>
         <p>You may contact our Customer Service by call on .</p>
         <p>Service available from Monday to Saturday from 9 am to 9 pm and Sunday 11am - 7pm.</p>
       </div>

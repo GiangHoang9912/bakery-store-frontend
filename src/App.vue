@@ -42,7 +42,7 @@ function logout() {
   <header>
     <div class="contact">
       <p>19001009</p>
-      <p>darlith@gmail.com</p>
+      <p>linhanh@gmail.com</p>
       <template v-if="!isLoggedIn">
         <RouterLink class="router-link" to="/login">Đăng nhập</RouterLink>
         <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
@@ -54,7 +54,7 @@ function logout() {
       </template>
     </div>
     <nav class="menu">
-      <RouterLink class="router-link" id="store-name" to="/">Thùy Phạm mooncake</RouterLink>
+      <RouterLink class="router-link" id="store-name" to="/">Linh Anh Mooncake</RouterLink>
       <template v-if="!isAdmin">
         <RouterLink class="router-link" to="/">Trang chủ</RouterLink>
         <RouterLink class="router-link" to="/products">Sản phẩm</RouterLink>

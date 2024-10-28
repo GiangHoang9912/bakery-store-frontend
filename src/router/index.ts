@@ -16,6 +16,7 @@ import CustomersView from '@/views/CustomerView.vue'
 import ProductManagementView from '@/views/ProductManagementView.vue'
 import OrderManagementView from '@/views/OrderManagementView.vue'
 import ContactUsManagementView from '@/views/ContactUsManagementView.vue'
+import EditInformationView from '@/views/EditInformationView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -82,6 +83,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/reset-password',
     name: 'reset-password',
     component: ResetPasswordView
+  },
+  {
+    path: '/edit-information',
+    name: 'edit-information',
+    component: EditInformationView
   },
   {
     path: '/manage-accounts',

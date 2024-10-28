@@ -3,6 +3,8 @@
 import { ref } from 'vue';
 import axios from 'axios';
 
+const loading = ref(false);
+
 const name = ref('');
 const email = ref('');
 const phone = ref('');
@@ -22,6 +24,7 @@ const validateForm = () => {
 
 const submitForm = async () => {
   if (validateForm()) {
+    loading.value = true;
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/contact-us`, {
         name: name.value,
@@ -30,8 +33,6 @@ const submitForm = async () => {
         note: message.value
       });
       console.log('Gửi liên hệ thành công:', response.data);
-      alert('Gửi liên hệ thành công!');
-      // Xóa nội dung form sau khi gửi thành công
       name.value = '';
       email.value = '';
       phone.value = '';
@@ -39,10 +40,10 @@ const submitForm = async () => {
     } catch (error) {
       console.error('Lỗi khi gửi liên hệ:', error);
       if (axios.isAxiosError(error) && error.response) {
-        alert(`Lỗi: ${error.response.data.message || 'Có lỗi xảy ra khi gửi liên hệ.'}`);
       } else {
-        alert('Có lỗi xảy ra khi gửi liên hệ. Vui lòng thử lại sau.');
       }
+    } finally {
+      loading.value = false;
     }
   }
 };
@@ -51,9 +52,12 @@ const submitForm = async () => {
 <template>
   <div class="contact-container">
     <h1 class="contact-title">CONTACT US</h1>
+    <div v-if="loading" class="loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
     <div class="contact-content">
       <div class="contact-text">
-        <p>Our shop would be delighted to assist as you discover Thùy Phạm Mooncake and its products.</p>
+        <p>Our shop would be delighted to assist as you discover Linh Anh Mooncake and its products.</p>
         <p>You may contact our Customer Service by call on .</p>
         <p>Service available from Monday to Saturday from 9 am to 9 pm and Sunday 11am - 7pm.</p>
       </div>
@@ -139,5 +143,32 @@ button {
   margin-bottom: 5px;
   text-align: left;
   width: 100%;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #8b572a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

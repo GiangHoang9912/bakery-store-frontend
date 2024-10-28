@@ -14,6 +14,7 @@ declare module 'vue' {
     CustomerAccount: typeof import('./src/components/CustomerAccount/CustomerAccount.vue')['default']
     Customers: typeof import('./src/components/Customers/Customers.vue')['default']
     EditCustomer: typeof import('./src/components/ProductManagement/EditCustomer.vue')['default']
+    EditInformation: typeof import('./src/components/EditInformation/EditInformation.vue')['default']
     Home: typeof import('./src/components/Home/Home.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']

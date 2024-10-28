@@ -18,13 +18,22 @@ onMounted(() => {
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="@/assets/slideshow_1.webp" class="d-block w-100">
+          <img src="http://localhost:8080/public/cafe.png" class="d-block w-100">
         </div>
         <div class="carousel-item">
-          <img src="@/assets/slideshow_3.webp" class="d-block w-100">
+          <img src="http://localhost:8080/public/cafeshop.webp" class="d-block w-100">
         </div>
         <div class="carousel-item">
-          <img src="@/assets/slideshow_5.webp" class="d-block w-100">
+          <img src="http://localhost:8080/public/cf.webp" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+          <img src="http://localhost:8080/public/cfshop.webp" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+          <img src="http://localhost:8080/public/mooncake.webp" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+          <img src="http://localhost:8080/public/mc.webp" class="d-block w-100">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
