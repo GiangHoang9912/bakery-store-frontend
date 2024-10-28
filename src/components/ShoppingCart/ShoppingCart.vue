@@ -1,59 +1,98 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-// Cart product data and state
-const product = ref({
-  name: 'Over the moon',
-  price: 600000,
-  quantity: 1,
-  image: 'https://via.placeholder.com/150' // Replace with actual image URL
-});
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  quantity: number;
+}
 
-// Total price calculation
-const totalPrice = ref(product.value.price * product.value.quantity);
+const cartItems = ref<Product[]>([]);
+const totalPrice = ref(0);
 
-const increaseQuantity = () => {
-  product.value.quantity++;
-  totalPrice.value = product.value.price * product.value.quantity;
-};
-
-const decreaseQuantity = () => {
-  if (product.value.quantity > 1) {
-    product.value.quantity--;
-    totalPrice.value = product.value.price * product.value.quantity;
+// Load giỏ hàng từ localStorage
+const loadCartFromLocalStorage = () => {
+  const savedCart = localStorage.getItem('cart');
+  if (savedCart) {
+    cartItems.value = JSON.parse(savedCart).filter((item: Product) => item.quantity > 0);
+    calculateTotal();
   }
 };
 
-// Checkout function
+// Tính tổng tiền
+const calculateTotal = () => {
+  totalPrice.value = cartItems.value.reduce((sum, item) => {
+    return sum + (item.price * item.quantity);
+  }, 0);
+};
+
+// Tăng số lượng
+const increaseQuantity = (product: Product) => {
+  product.quantity++;
+  updateCart();
+};
+
+// Giảm số lượng
+const decreaseQuantity = (product: Product) => {
+  if (product.quantity > 1) {
+    product.quantity--;
+    updateCart();
+  } else {
+    // Xóa sản phẩm khỏi giỏ hàng
+    cartItems.value = cartItems.value.filter(item => item.id !== product.id);
+    updateCart();
+  }
+};
+
+// Cập nhật giỏ hàng trong localStorage
+const updateCart = () => {
+  localStorage.setItem('cart', JSON.stringify(cartItems.value));
+  calculateTotal();
+};
+
+// Format giá tiền
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+};
+
 const handleCheckout = () => {
   alert('Proceeding to checkout');
 };
+
+onMounted(() => {
+  loadCartFromLocalStorage();
+});
 </script>
 
 <template>
   <div class="cart-container">
     <h2>GIỎ HÀNG</h2>
-    <div class="cart-content">
-      <!-- Product details -->
-      <div class="product-details">
-        <img :src="product.image" alt="Product Image" />
+    <div v-if="cartItems.length === 0" class="empty-cart">
+      <p>Giỏ hàng trống</p>
+    </div>
+    <div v-else class="cart-content">
+      <!-- Hiển thị từng sản phẩm trong giỏ hàng -->
+      <div v-for="item in cartItems" :key="item.id" class="product-details">
+        <img :src="item.imageUrl" :alt="item.name" />
         <div class="product-info">
-          <p>{{ product.name }}</p>
-          <p>{{ product.price.toLocaleString() }}₫</p>
+          <p class="product-name">{{ item.name }}</p>
+          <p class="product-price">{{ formatPrice(item.price) }}</p>
           <div class="quantity-control">
             <p>Số lượng:</p>
-            <button @click="decreaseQuantity">-</button>
-            <span>{{ product.quantity }}</span>
-            <button @click="increaseQuantity">+</button>
+            <button @click="decreaseQuantity(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button @click="increaseQuantity(item)">+</button>
           </div>
-          <p class="total-price">Tổng thanh toán: {{ totalPrice.toLocaleString() }}₫</p>
+          <p class="item-total">Thành tiền: {{ formatPrice(item.price * item.quantity) }}</p>
         </div>
       </div>
     </div>
 
-    <!-- Checkout button centered on the screen -->
-    <div class="checkout">
+    <div v-if="cartItems.length > 0" class="cart-summary">
+      <p class="total-price">Tổng thanh toán: {{ formatPrice(totalPrice) }}</p>
       <button class="checkout-button" @click="handleCheckout">THANH TOÁN</button>
     </div>
   </div>
@@ -156,5 +195,32 @@ h2 {
 
 .checkout-button:hover {
   background-color: #8b6049;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  color: #a57b5b;
+  font-size: 16px;
+}
+
+.item-total {
+  color: #a57b5b;
+  font-weight: bold;
+}
+
+.cart-summary {
+  margin-top: 2rem;
+  text-align: center;
 }
 </style>

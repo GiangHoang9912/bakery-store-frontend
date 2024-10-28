@@ -9,18 +9,35 @@
         <thead>
           <tr>
             <th>MÃ ĐƠN HÀNG</th>
-            <th>SẢN PHẨM</th>
-            <th>NGÀY GIAO HÀNG</th>
+            <th>CHI TIẾT ĐƠN HÀNG</th>
+            <th>TỔNG TIỀN</th>
+            <th>NGÀY TẠO</th>
             <th>TRẠNG THÁI</th>
-            <th>SỬA / XÓA</th>
+            <th>THAO TÁC</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="order in orders" :key="order.id">
-            <td>{{ order.id }}</td>
-            <td>{{ order.product }}</td>
-            <td>{{ order.deliveryDate }}</td>
-            <td>{{ order.status }}</td>
+            <td>#{{ order.id }}</td>
+            <td>
+              <div v-for="detail in order.orderDetails" :key="detail.id" class="order-detail">
+                <div class="product-info">
+                  <img :src="`http://localhost:8080${detail.product.image}`" :alt="detail.product.name" class="product-image">
+                  <div class="product-details">
+                    <span class="product-name">{{ detail.product.name }}</span>
+                    <span>Số lượng: {{ detail.quantity }}</span>
+                    <span>Đơn giá: {{ formatPrice(detail.price) }}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>{{ formatPrice(calculateTotal(order.orderDetails)) }}</td>
+            <td>{{ formatDate(order.createdAt) }}</td>
+            <td>
+              <span :class="['status-badge', order.status.toLowerCase()]">
+                {{ translateStatus(order.status) }}
+              </span>
+            </td>
             <td>
               <button class="edit-btn" @click="editOrder(order.id)">
                 <i class="icon-edit"></i>
@@ -44,6 +61,22 @@
     <div v-if="loading" class="loading-overlay">
       <div class="loading-spinner"></div>
     </div>
+    <!-- Thêm modal chỉnh sửa trạng thái -->
+    <div v-if="showEditModal" class="modal">
+      <div class="modal-content">
+        <h3>Cập nhật trạng thái đơn hàng #{{selectedOrder?.id}}</h3>
+        <select v-model="selectedStatus">
+          <option value="PENDING">Chờ xử lý</option>
+          <option value="PROCESSING">Đang xử lý</option>
+          <option value="COMPLETED">Hoàn thành</option>
+          <option value="CANCELLED">Đã hủy</option>
+        </select>
+        <div class="modal-buttons">
+          <button @click="updateOrderStatus">Cập nhật</button>
+          <button @click="showEditModal = false">Hủy</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +86,9 @@ import axios from 'axios';
 
 const orders = ref([]);
 const loading = ref(false);
+const showEditModal = ref(false);
+const selectedOrder = ref<any>(null);
+const selectedStatus = ref('');
 
 // Hàm để lấy danh sách đơn hàng
 const fetchOrders = async () => {
@@ -76,26 +112,12 @@ const fetchOrders = async () => {
 // Gọi API khi component được tạo
 onMounted(fetchOrders);
 
-const editOrder = async (id: string) => {
-  loading.value = true;
-  try {
-    const orderToEdit = orders.value.find(order => order.id === id);
-    if (orderToEdit) {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      const token = user.token;
-      const updatedOrder = { ...orderToEdit, /* các trường đã được cập nhật */ };
-      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/orders/${id}`, updatedOrder, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      alert(`Đã cập nhật đơn hàng ${id}`);
-      await fetchOrders();
-    }
-  } catch (error) {
-    console.error('Lỗi khi cập nhật đơn hàng:', error);
-  } finally {
-    loading.value = false;
+const editOrder = (id: string) => {
+  const order = orders.value.find(o => o.id === id);
+  if (order) {
+    selectedOrder.value = order;
+    selectedStatus.value = order.status;
+    showEditModal.value = true;
   }
 };
 
@@ -116,6 +138,63 @@ const deleteOrder = async (id: string) => {
     await fetchOrders();
   } catch (error) {
     console.error('Lỗi khi xóa đơn hàng:', error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Thêm các hàm tiện ích
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(price);
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('vi-VN');
+};
+
+const calculateTotal = (orderDetails: any[]) => {
+  return orderDetails.reduce((sum, detail) => sum + detail.price * detail.quantity, 0);
+};
+
+const translateStatus = (status: string) => {
+  const statusMap: { [key: string]: string } = {
+    'PENDING': 'Chờ xử lý',
+    'PROCESSING': 'Đang xử lý',
+    'COMPLETED': 'Hoàn thành',
+    'CANCELLED': 'Đã hủy'
+  };
+  return statusMap[status] || status;
+};
+
+// Thêm hàm updateOrderStatus
+const updateOrderStatus = async () => {
+  if (!selectedOrder.value) return;
+
+  loading.value = true;
+  try {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const token = user.token;
+
+    await axios.patch(
+      `${import.meta.env.VITE_API_BASE_URL}/orders/${selectedOrder.value.id}/status`,
+      selectedStatus.value,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    await fetchOrders();
+    showEditModal.value = false;
+    alert('Cập nhật trạng thái thành công');
+  } catch (error) {
+    console.error('Lỗi khi cập nhật trạng thái:', error);
+    alert('Có lỗi xảy ra khi cập nhật trạng thái');
   } finally {
     loading.value = false;
   }
@@ -235,5 +314,142 @@ const deleteOrder = async (id: string) => {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.product-info {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.product-details span:not(.product-name) {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.product-details span:not(.product-name)::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #A87951;
+  border-radius: 50%;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.order-detail {
+  margin-bottom: 12px;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.data-table td {
+  vertical-align: top;
+}
+
+/* Thêm CSS cho modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  color: #A87951;
+}
+
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-child {
+  background-color: #A87951;
+  color: white;
+}
+
+.modal-buttons button:last-child {
+  background-color: #ddd;
 }
 </style>

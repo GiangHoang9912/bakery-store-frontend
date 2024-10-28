@@ -49,7 +49,7 @@ function logout() {
       </template>
       <template v-else>
         <span class="user-info">{{ fullname }}</span>
-        <RouterLink class="router-link" to="/order-details">Giỏ hàng</RouterLink>
+        <RouterLink v-if="!isAdmin" class="router-link" to="/order-details">Giỏ hàng</RouterLink>
         <a href="#" class="router-link" @click.prevent="logout">Đăng xuất</a>
       </template>
     </div>

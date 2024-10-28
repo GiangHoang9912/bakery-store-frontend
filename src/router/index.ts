@@ -55,7 +55,7 @@ const routes: Array<RouteRecordRaw> = [
     component: RegisterView
   },
   {
-    path: '/search-results',
+    path: '/search-results/:orderId',
     name: 'search-results',
     component: SearchResultsView
   },

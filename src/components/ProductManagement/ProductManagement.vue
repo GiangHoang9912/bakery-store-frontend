@@ -230,14 +230,6 @@ onMounted(() => {
           </tr>
         </tbody>
       </table>
-
-      <div class="pagination">
-        <button class="page-btn">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <span>...</span>
-        <button class="page-btn next-btn">&gt;</button>
-      </div>
     </main>
   </div>
 
@@ -492,4 +484,3 @@ onMounted(() => {
   border-radius: 5px;
 }
 </style>
-

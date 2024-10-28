@@ -4,34 +4,26 @@
     <h2>Tra cứu đơn hàng</h2>
     <form @submit.prevent="onSubmit">
       <div class="form-group">
-        <input type="text" id="username" v-model="form.username" required placeholder="Nhập mã đơn hàng" />
+        <input type="text" v-model="orderId" required placeholder="Nhập mã đơn hàng" />
       </div>
-
-      
       <button type="submit" class="btn-register">Tra cứu đơn hàng</button>
     </form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const form = reactive({
-  username: '',
-  fullname: '',
-  phone: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-})
+const router = useRouter()
+const orderId = ref('')
 
 const onSubmit = () => {
-  if (form.password !== form.confirmPassword) {
-    alert('Mật khẩu không khớp!')
-    return
-  }
-  console.log('Form submitted', form)
-  // Xử lý đăng kí ở đây
+  // Chuyển hướng sang trang kết quả tìm kiếm với orderId
+  router.push({
+    name: 'search-results',
+    params: { orderId: orderId.value }
+  })
 }
 </script>
 
