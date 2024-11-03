@@ -4,10 +4,60 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
+// Thêm enum cho status
+enum OrderStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED'
+}
+
 const route = useRoute()
 const orderDetails = ref(null)
 const loading = ref(false)
 const error = ref('')
+
+// Thêm hàm translateStatus
+const translateStatus = (status: string) => {
+  const statusMap = {
+    [OrderStatus.PENDING]: 'Chờ xử lý',
+    [OrderStatus.PROCESSING]: 'Đang xử lý',
+    [OrderStatus.COMPLETED]: 'Hoàn thành',
+    [OrderStatus.CANCELLED]: 'Đã hủy'
+  };
+  return statusMap[status as OrderStatus] || status;
+};
+
+// Thêm hàm getStatusColor
+const getStatusColor = (status: string) => {
+  const colorMap = {
+    [OrderStatus.PENDING]: {
+      background: '#fff3cd',
+      color: '#856404'
+    },
+    [OrderStatus.PROCESSING]: {
+      background: '#cce5ff',
+      color: '#004085'
+    },
+    [OrderStatus.COMPLETED]: {
+      background: '#d4edda',
+      color: '#155724'
+    },
+    [OrderStatus.CANCELLED]: {
+      background: '#f8d7da',
+      color: '#721c24'
+    }
+  };
+  return colorMap[status as OrderStatus] || { background: '#f8f9fa', color: '#333' };
+};
+
+// Thêm hàm formatPrice
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(price);
+};
 
 const fetchOrderDetails = async () => {
   const orderId = route.params.orderId
@@ -35,10 +85,10 @@ const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleString('vi-VN')
 }
 
-// Thêm hàm tính tổng tiền
+// Cập nhật hàm calculateTotal
 const calculateTotal = () => {
   if (!orderDetails.value?.orderDetails) return 0
-  return orderDetails.value.orderDetails.reduce((total, item) => total + item.price, 0)
+  return orderDetails.value.orderDetails.reduce((total, item) => total + (item.price * item.quantity), 0)
 }
 </script>
 
@@ -57,7 +107,18 @@ const calculateTotal = () => {
       <div v-else-if="orderDetails" class="order-details">
         <div class="order-info">
           <p>Mã đơn hàng: #{{ orderDetails.id }}</p>
-          <p>Trạng thái: {{ orderDetails.status }}</p>
+          <p>
+            Trạng thái:
+            <span
+              class="status-badge"
+              :style="{
+                backgroundColor: getStatusColor(orderDetails.status).background,
+                color: getStatusColor(orderDetails.status).color
+              }"
+            >
+              {{ translateStatus(orderDetails.status) }}
+            </span>
+          </p>
           <p>Ngày đặt: {{ formatDate(orderDetails.createdAt) }}</p>
           <p>Cập nhật lần cuối: {{ formatDate(orderDetails.updatedAt) }}</p>
         </div>
@@ -66,17 +127,17 @@ const calculateTotal = () => {
           <h3>Sản phẩm</h3>
           <div v-for="detail in orderDetails.orderDetails" :key="detail.id" class="product-item">
             <div class="product-image">
-              <img :src="detail.product.imageUrl" :alt="detail.product.name">
+              <img :src="`http://localhost:8080${detail.product.image}`" :alt="detail.product.name">
             </div>
             <div class="product-info">
               <p class="product-name">{{ detail.product.name }}</p>
               <p>Số lượng: {{ detail.quantity }}</p>
-              <p>Giá: {{ detail.price.toLocaleString() }}đ</p>
+              <p>Giá: {{ formatPrice(detail.price) }}</p>
             </div>
           </div>
 
           <div class="order-total">
-            <p>Tổng tiền: {{ calculateTotal().toLocaleString() }}đ</p>
+            <p>Tổng tiền: {{ formatPrice(calculateTotal()) }}</p>
           </div>
         </div>
       </div>

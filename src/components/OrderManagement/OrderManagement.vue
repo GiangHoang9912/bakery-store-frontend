@@ -34,7 +34,13 @@
             <td>{{ formatPrice(calculateTotal(order.orderDetails)) }}</td>
             <td>{{ formatDate(order.createdAt) }}</td>
             <td>
-              <span :class="['status-badge', order.status.toLowerCase()]">
+              <span
+                :class="['status-badge', order.status.toLowerCase()]"
+                :style="{
+                  backgroundColor: getStatusColor(order.status).background,
+                  color: getStatusColor(order.status).color
+                }"
+              >
                 {{ translateStatus(order.status) }}
               </span>
             </td>
@@ -89,6 +95,14 @@ const loading = ref(false);
 const showEditModal = ref(false);
 const selectedOrder = ref<any>(null);
 const selectedStatus = ref('');
+
+// Thêm enum cho status
+enum OrderStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED'
+}
 
 // Hàm để lấy danh sách đơn hàng
 const fetchOrders = async () => {
@@ -159,14 +173,38 @@ const calculateTotal = (orderDetails: any[]) => {
   return orderDetails.reduce((sum, detail) => sum + detail.price * detail.quantity, 0);
 };
 
+// Cập nhật hàm translateStatus
 const translateStatus = (status: string) => {
-  const statusMap: { [key: string]: string } = {
-    'PENDING': 'Chờ xử lý',
-    'PROCESSING': 'Đang xử lý',
-    'COMPLETED': 'Hoàn thành',
-    'CANCELLED': 'Đã hủy'
+  const statusMap = {
+    [OrderStatus.PENDING]: 'Chờ xử lý',
+    [OrderStatus.PROCESSING]: 'Đang xử lý',
+    [OrderStatus.COMPLETED]: 'Hoàn thành',
+    [OrderStatus.CANCELLED]: 'Đã hủy'
   };
-  return statusMap[status] || status;
+  return statusMap[status as OrderStatus] || status;
+};
+
+// Thêm mapping cho màu sắc status
+const getStatusColor = (status: string) => {
+  const colorMap = {
+    [OrderStatus.PENDING]: {
+      background: '#fff3cd',
+      color: '#856404'
+    },
+    [OrderStatus.PROCESSING]: {
+      background: '#cce5ff',
+      color: '#004085'
+    },
+    [OrderStatus.COMPLETED]: {
+      background: '#d4edda',
+      color: '#155724'
+    },
+    [OrderStatus.CANCELLED]: {
+      background: '#f8d7da',
+      color: '#721c24'
+    }
+  };
+  return colorMap[status as OrderStatus] || { background: '#f8f9fa', color: '#333' };
 };
 
 // Thêm hàm updateOrderStatus
@@ -367,30 +405,20 @@ const updateOrderStatus = async () => {
 }
 
 .status-badge {
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
+  display: inline-block;
+  text-align: center;
+  min-width: 100px;
 }
 
-.status-badge.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.processing {
-  background-color: #cce5ff;
-  color: #004085;
-}
-
-.status-badge.completed {
-  background-color: #d4edda;
-  color: #155724;
-}
-
+.status-badge.pending,
+.status-badge.processing,
+.status-badge.completed,
 .status-badge.cancelled {
-  background-color: #f8d7da;
-  color: #721c24;
+  /* Xóa các style cũ */
 }
 
 .data-table td {

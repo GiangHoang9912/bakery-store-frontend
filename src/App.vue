@@ -48,7 +48,7 @@ function logout() {
         <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
       </template>
       <template v-else>
-        <span class="user-info">{{ fullname }}</span>
+        <RouterLink v-if="!isAdmin" class="router-link" to="/reset-password">{{ fullname }}</RouterLink>
         <RouterLink v-if="!isAdmin" class="router-link" to="/order-details">Giỏ hàng</RouterLink>
         <a href="#" class="router-link" @click.prevent="logout">Đăng xuất</a>
       </template>

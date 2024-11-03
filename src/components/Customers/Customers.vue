@@ -96,9 +96,10 @@ const deleteUser = async (userId: number) => {
       }
     });
 
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 204) {
       users.value = users.value.filter(u => u.id !== userId);
       alert('Xóa người dùng thành công');
+      await fetchUsers();
     }
   } catch (error) {
     console.error('Lỗi khi xóa người dùng:', error);

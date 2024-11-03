@@ -1,14 +1,50 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios from 'axios';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 // Form data
-const email = ref('');
+const oldPassword = ref('');
 const newPassword = ref('');
+const confirmPassword = ref('');
 
-// Function to handle login
-const handleSubmit = () => {
-  alert(`Email: ${email.value}, New Password: ${newPassword.value}`);
+// Function to handle password reset
+const handleSubmit = async () => {
+  try {
+    // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+    if (newPassword.value !== confirmPassword.value) {
+      toast.error('Mật khẩu mới không khớp');
+      return;
+    }
+
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // Gọi API đổi mật khẩu
+    const response = await axios.put(
+      `http://localhost:8080/api/users/reset-password`,
+      newPassword.value,
+      {
+        headers: {
+          'Content-Type': 'text/plain',
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+    );
+
+    if (response.status === 200) {
+      toast.success('Đổi mật khẩu thành công');
+      // Reset form
+      oldPassword.value = '';
+      newPassword.value = '';
+      confirmPassword.value = '';
+    }
+  } catch (error) {
+    toast.error('Đổi mật khẩu thất bại');
+    console.error('Error:', error);
+  }
 };
 </script>
 
@@ -16,19 +52,9 @@ const handleSubmit = () => {
   <div class="reset-container">
     <h2>CÀI ĐẶT LẠI MẬT KHẨU</h2>
     <form class="reset-form" @submit.prevent="handleSubmit">
-      <input
-        type="email"
-        v-model="email"
-        placeholder="Email"
-        required
-      />
-      <input
-        type="password"
-        v-model="newPassword"
-        placeholder="Mật khẩu mới"
-        required
-      />
-      <button type="submit">Đăng nhập</button>
+      <input type="password" v-model="newPassword" placeholder="Mật khẩu mới" required />
+      <input type="password" v-model="confirmPassword" placeholder="Nhập lại mật khẩu" required />
+      <button type="submit">Đổi mật khẩu</button>
     </form>
   </div>
 </template>
