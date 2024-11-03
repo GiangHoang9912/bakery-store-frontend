@@ -8,6 +8,7 @@ const isLoggedIn = ref(false)
 const fullname = ref('')
 const isAdmin = ref(false)
 const router = useRouter()
+const showDropdown = ref(false)
 
 onMounted(() => {
   checkLoginStatus()
@@ -48,7 +49,13 @@ function logout() {
         <RouterLink class="router-link" to="/register">Đăng ký</RouterLink>
       </template>
       <template v-else>
-        <RouterLink v-if="!isAdmin" class="router-link" to="/reset-password">{{ fullname }}</RouterLink>
+        <div class="dropdown" @mouseover="showDropdown = true" @mouseleave="showDropdown = false">
+          <span class="router-link">{{ fullname }}</span>
+          <div class="dropdown-content" v-show="showDropdown">
+            <RouterLink to="/customer-account">Thông tin cá nhân</RouterLink>
+            <RouterLink to="/reset-password">Đổi mật khẩu</RouterLink>
+          </div>
+        </div>
         <RouterLink v-if="!isAdmin" class="router-link" to="/order-details">Giỏ hàng</RouterLink>
         <a href="#" class="router-link" @click.prevent="logout">Đăng xuất</a>
       </template>
@@ -127,5 +134,32 @@ nav a {
   margin: 0 1rem;
   font-size: 1rem;
   color: #000;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.dropdown-content a {
+  color: #000;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
 }
 </style>

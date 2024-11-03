@@ -61,8 +61,9 @@ const login = async (e: Event) => {
         {{ loading ? 'Đang đăng nhập...' : 'Đăng nhập' }}
       </button>
     </form>
-    <a href="#">Quên mật khẩu?</a>
-    <a href="#">Đăng kí tài khoản</a>
+    <!--  to="/reset-password" -->
+    <a href="/forgot-password">Quên mật khẩu?</a>
+    <a href="/register">Đăng kí tài khoản</a>
   </div>
 
   <!-- Thêm loading overlay -->

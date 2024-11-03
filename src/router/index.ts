@@ -17,6 +17,7 @@ import ProductManagementView from '@/views/ProductManagementView.vue'
 import OrderManagementView from '@/views/OrderManagementView.vue'
 import ContactUsManagementView from '@/views/ContactUsManagementView.vue'
 import EditInformationView from '@/views/EditInformationView.vue'
+import ForgotPasswordView from '@/views/ForgotPasswordView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -112,6 +113,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'manage-contacts-us',
     component: ContactUsManagementView,
     meta: { requiresAdmin: true }
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: ForgotPasswordView
   }
 ]
 
