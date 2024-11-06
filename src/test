@@ -1,0 +1,175 @@
+@startuml
+actor User
+participant CartController
+participant ProductService
+participant CartService
+participant Database
+
+User -> CartController: addProductToCart(productId, quantity)
+CartController -> ProductService: getProductById(productId)
+ProductService -> Database: fetchProduct(productId)
+Database --> ProductService: productData
+ProductService --> CartController: productData
+
+CartController -> CartService: addProductToCart(productData, quantity)
+CartService -> Database: addOrUpdateCartItem(userId, productId, quantity)
+Database --> CartService: cartItemData
+CartService --> CartController: cartItemData
+
+CartController --> User: cartUpdatedSuccess()
+@enduml
+
+@startuml
+actor User
+participant ContactController
+participant ContactService
+participant Database
+
+User -> ContactController: submitContactForm(name, email, message)
+ContactController -> ContactService: saveContactForm(name, email, message)
+ContactService -> Database: insertContactForm(name, email, message)
+Database --> ContactService: confirmationData
+ContactService --> ContactController: confirmationData
+
+ContactController --> User: contactFormSubmittedSuccess()
+@enduml
+
+@startuml
+actor User
+participant AccountController
+participant AuthService
+participant Database
+
+User -> AccountController: changePassword(oldPassword, newPassword)
+AccountController -> AuthService: validateOldPassword(userId, oldPassword)
+AuthService -> Database: fetchUserPassword(userId)
+Database --> AuthService: currentPassword
+AuthService --> AccountController: passwordValidationResult
+
+alt passwordValidationSuccess
+    AccountController -> AuthService: updatePassword(userId, newPassword)
+    AuthService -> Database: updateUserPassword(userId, newPassword)
+    Database --> AuthService: updateConfirmation
+    AuthService --> AccountController: updateConfirmation
+    AccountController --> User: passwordChangeSuccess()
+else passwordValidationFail
+    AccountController --> User: passwordChangeFailed()
+end
+@enduml
+
+@startuml
+actor User
+participant AccountController
+participant AccountService
+participant Database
+
+User -> AccountController: updateAccountDetails(name, email, phone)
+AccountController -> AccountService: validateAccountDetails(name, email, phone)
+AccountService --> AccountController: validationResult
+
+alt validationSuccess
+    AccountController -> AccountService: saveAccountDetails(userId, name, email, phone)
+    AccountService -> Database: updateAccount(userId, name, email, phone)
+    Database --> AccountService: updateConfirmation
+    AccountService --> AccountController: updateConfirmation
+    AccountController --> User: accountUpdateSuccess()
+else validationFail
+    AccountController --> User: accountUpdateFailed()
+end
+@enduml
+
+
+@startuml
+actor Admin
+participant ProductController
+participant ProductService
+participant Database
+
+== AddProduct ==
+Admin -> ProductController: addProduct(productData)
+ProductController -> ProductService: validateProductData(productData)
+ProductService --> ProductController: validationResult
+
+alt validationSuccess
+    ProductController -> ProductService: saveProduct(productData)
+    ProductService -> Database: insertProduct(productData)
+    Database --> ProductService: addConfirmation
+    ProductService --> ProductController: addConfirmation
+    ProductController --> Admin: productAddSuccess()
+else validationFail
+    ProductController --> Admin: productAddFailed()
+end
+
+== UpdateProduct ==
+Admin -> ProductController: updateProduct(productId, newProductData)
+ProductController -> ProductService: validateProductData(newProductData)
+ProductService --> ProductController: validationResult
+
+alt validationSuccess
+    ProductController -> ProductService: updateProduct(productId, newProductData)
+    ProductService -> Database: updateProduct(productId, newProductData)
+    Database --> ProductService: updateConfirmation
+    ProductService --> ProductController: updateConfirmation
+    ProductController --> Admin: productUpdateSuccess()
+else validationFail
+    ProductController --> Admin: productUpdateFailed()
+end
+
+== DeleteProduct ==
+Admin -> ProductController: deleteProduct(productId)
+ProductController -> ProductService: deleteProduct(productId)
+ProductService -> Database: removeProduct(productId)
+Database --> ProductService: deleteConfirmation
+ProductService --> ProductController: deleteConfirmation
+ProductController --> Admin: productDeleteSuccess()
+@enduml
+
+@startuml
+actor User
+participant OrderService
+participant OrderRepository
+participant NotificationService
+
+User -> OrderService : updateOrderStatus(orderId, newStatus)
+OrderService -> OrderRepository : findOrderById(orderId)
+OrderRepository --> OrderService : order
+
+alt order found
+    OrderService -> OrderRepository : updateStatus(order, newStatus)
+    OrderRepository --> OrderService : statusUpdated
+
+    alt statusUpdated == true
+        OrderService -> NotificationService : notifyUser(orderId, newStatus)
+        NotificationService --> User : notificationSent
+    else statusUpdated == false
+        OrderService -> User : updateFailed()
+    end
+else order not found
+    OrderService -> User : orderNotFound()
+end
+@enduml
+
+@startuml
+actor User
+participant ContactService
+participant ContactRepository
+participant NotificationService
+
+User -> ContactService : deleteContact(contactId)
+ContactService -> ContactRepository : findContactById(contactId)
+ContactRepository --> ContactService : contact
+
+alt contact found
+    ContactService -> ContactRepository : delete(contact)
+    ContactRepository --> ContactService : deletionSuccessful
+
+    alt deletionSuccessful == true
+        ContactService -> NotificationService : notifyUser(contactId, "deleted")
+        NotificationService --> User : notificationSent
+    else deletionSuccessful == false
+        ContactService -> User : deletionFailed()
+    end
+else contact not found
+    ContactService -> User : contactNotFound()
+end
+@enduml

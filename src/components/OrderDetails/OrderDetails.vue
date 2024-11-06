@@ -21,14 +21,14 @@
       <p><span>Tổng giá trị đơn hàng:</span> {{ formatPrice(calculateOrderValue()) }}</p>
       <p><span>Phí vận chuyển:</span> {{ formatPrice(shippingFee) }}</p>
       <p><span>Khuyến mãi:</span> {{ formatPrice(discount) }}</p>
-      <p class="total"><span>Tổng thanh toán:</span> {{ formatPrice(calculateTotalAmount()) }}</p>
+      <p class="total"><span>Tổng ĐẶT HÀNG:</span> {{ formatPrice(calculateTotalAmount()) }}</p>
       <p><span>Trạng thái đơn hàng:</span> {{ orderStatus }}</p>
     </div>
 
     <div class="button-group">
       <button class="button-back" @click="goHome">QUAY VỀ TRANG CHỦ</button>
       <button class="button-payment" @click="showReceiverDialog" :disabled="isSubmitting">
-        {{ isSubmitting ? 'ĐANG XỬ LÝ...' : 'THANH TOÁN' }}
+        {{ isSubmitting ? 'ĐANG XỬ LÝ...' : 'ĐẶT HÀNG' }}
       </button>
     </div>
 
@@ -106,7 +106,7 @@ const calculateOrderValue = () => {
   }, 0);
 };
 
-// Tính tổng thanh toán
+// Tính tổng ĐẶT HÀNG
 const calculateTotalAmount = () => {
   return calculateOrderValue() + shippingFee.value - discount.value;
 };
@@ -245,7 +245,7 @@ onMounted(() => {
 
 .item-details h3 {
   margin: 0 0 10px 0;
-  color: #795548;
+  color: #3a4a74;
 }
 
 .order-summary {
@@ -267,7 +267,7 @@ onMounted(() => {
 
 .total {
   font-size: 1.2em;
-  color: #795548;
+  color: #3a4a74;
   font-weight: bold;
 }
 
@@ -280,7 +280,7 @@ onMounted(() => {
 .button-back {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #795548;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;

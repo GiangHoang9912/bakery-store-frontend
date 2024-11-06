@@ -157,7 +157,7 @@ const calculateTotal = () => {
 }
 
 .order-lookup h2 {
-  color: #795548;
+  color: #3a4a74;
   font-size: 32px; /* tăng kích thước chữ */
   margin-bottom: 40px; /* tăng khoảng cách dưới */
   font-weight: 600;
@@ -173,7 +173,7 @@ const calculateTotal = () => {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background-color: #795548;
+  background-color: #3a4a74;
 }
 
 .error-message {
@@ -205,7 +205,7 @@ input::placeholder {
 
 button {
   padding: 10px;
-  background-color: #795548;
+  background-color: #3a4a74;
   color: white;
   border: none;
   font-size: 16px;
@@ -289,7 +289,7 @@ button:hover {
   font-weight: 600;
   text-align: right;
   font-size: 1.4em; /* tăng kích thước chữ */
-  color: #795548;
+  color: #3a4a74;
 }
 
 @media (max-width: 768px) {
@@ -325,7 +325,7 @@ button:hover {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #A87951;
+  border-top: 5px solid #5165a8;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

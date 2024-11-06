@@ -150,7 +150,7 @@ onMounted(() => {
 
 h2 {
   text-align: center;
-  color: #8b572a;
+  color: #3a4a74;
 }
 
 .form-group {
@@ -172,12 +172,12 @@ input {
 }
 
 input:focus {
-  border-color: #8b572a;
+  border-color: #3a4a74;
 }
 
 .btn-register {
   padding: 10px;
-  background-color: #8b572a;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 4px;
@@ -186,7 +186,7 @@ input:focus {
 }
 
 .btn-register:hover {
-  background-color: #795045;
+  background-color: #4d5286;
 }
 
 .orders-list {
@@ -212,7 +212,7 @@ input:focus {
 
 .order-header span:first-child {
   font-weight: bold;
-  color: #8b572a;
+  color: #3a4a74;
 }
 
 .order-details {
@@ -240,7 +240,7 @@ input:focus {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #8b572a;
+  border-top: 5px solid #3a4a74;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

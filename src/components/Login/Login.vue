@@ -89,7 +89,7 @@ form {
 }
 
 .login-container h2 {
-  color: #a56538;
+  color: #3a4a74;
   margin-bottom: 20px;
 }
 
@@ -105,7 +105,7 @@ form {
 .login-container button {
   width: 30%;
   padding: 10px;
-  background-color: #a56538;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 4px;
@@ -113,7 +113,7 @@ form {
 }
 
 .login-container button:hover {
-  background-color: #8b4e27;
+  background-color: #3a4a74;
 }
 
 .login-container a {
@@ -145,7 +145,7 @@ form {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #a56538;
+  border-top: 5px solid #3a4a74;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

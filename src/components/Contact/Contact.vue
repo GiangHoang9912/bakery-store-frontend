@@ -57,7 +57,7 @@ const submitForm = async () => {
     </div>
     <div class="contact-content">
       <div class="contact-text">
-        <p>Our shop would be delighted to assist as you discover Linh Anh Mooncake and its products.</p>
+        <p>Our shop would be delighted to assist as you discover October Pastry and its products.</p>
         <p>You may contact our Customer Service by call on .</p>
         <p>Service available from Monday to Saturday from 9 am to 9 pm and Sunday 11am - 7pm.</p>
       </div>
@@ -90,7 +90,7 @@ const submitForm = async () => {
 }
 
 .contact-title {
-  color: #c9a063;
+  color: #3a4a74;
   font-size: 24px;
   margin-bottom: 20px;
 }
@@ -127,7 +127,7 @@ textarea {
 }
 
 button {
-  background-color: #8b572a;
+  background-color: #3a4a74;
   color: white;
   border: none;
   cursor: pointer;
@@ -162,7 +162,7 @@ button {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #8b572a;
+  border-top: 5px solid #3a4a74;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

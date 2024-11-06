@@ -40,7 +40,7 @@ const handlePayment = () => {
 
 <template>
   <div class="payment-container">
-    <h2>XÁC NHẬN THANH TOÁN</h2>
+    <h2>XÁC NHẬN ĐẶT HÀNG</h2>
     <div class="payment-content">
       <!-- Product details -->
       <div class="product-details">
@@ -54,7 +54,7 @@ const handlePayment = () => {
             <span>{{ product.quantity }}</span>
             <button @click="increaseQuantity">+</button>
           </div>
-          <p class="total-price">Tổng thanh toán: {{ totalPrice.toLocaleString() }}₫</p>
+          <p class="total-price">Tổng ĐẶT HÀNG: {{ totalPrice.toLocaleString() }}₫</p>
         </div>
       </div>
 
@@ -77,7 +77,7 @@ const handlePayment = () => {
           <label for="note">Ghi chú:</label>
           <textarea v-model="recipientInfo.note" id="note"></textarea>
         </div>
-        <button class="pay-button" @click="handlePayment">THANH TOÁN</button>
+        <button class="pay-button" @click="handlePayment">ĐẶT HÀNG</button>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@ const handlePayment = () => {
 
 h2 {
   font-size: 24px;
-  color: #a57b5b;
+  color: #3a4a74;
   text-align: center;
   margin-bottom: 30px;
 }
@@ -135,7 +135,7 @@ h2 {
 .quantity-control button {
   width: 30px;
   height: 30px;
-  background-color: #a57b5b;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;
@@ -176,7 +176,7 @@ h2 {
 .pay-button {
   width: 100%;
   padding: 10px;
-  background-color: #a57b5b;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;
@@ -185,6 +185,6 @@ h2 {
 }
 
 .pay-button:hover {
-  background-color: #8b6049;
+  background-color: #3a4a74;
 }
 </style>

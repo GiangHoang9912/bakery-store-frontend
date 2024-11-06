@@ -57,7 +57,7 @@ onMounted(() => {
 
 h2 {
   font-size: 28px;
-  color: #a57b5b;
+  color: #3a4a74;
   text-align: center;
   margin-bottom: 30px;
   font-weight: 600;
@@ -65,16 +65,16 @@ h2 {
 
 h3 {
   font-size: 22px;
-  color: #6b4423;
+  color: #3d3885;
   margin-bottom: 25px;
   text-align: center;
-  border-bottom: 2px solid #e6d5c5;
+  border-bottom: 2px solid #c6c5e6;
   padding-bottom: 10px;
 }
 
 .account-info-container {
   padding: 20px;
-  background-color: #faf6f3;
+  background-color: #f3f3fa;
   border-radius: 10px;
 }
 

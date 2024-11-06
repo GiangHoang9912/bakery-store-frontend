@@ -61,7 +61,7 @@ function logout() {
       </template>
     </div>
     <nav class="menu">
-      <RouterLink class="router-link" id="store-name" to="/">Linh Anh Mooncake</RouterLink>
+      <RouterLink class="router-link" id="store-name" to="/">OCTOBER PASTRY</RouterLink>
       <template v-if="!isAdmin">
         <RouterLink class="router-link" to="/">Trang chủ</RouterLink>
         <RouterLink class="router-link" to="/products">Sản phẩm</RouterLink>
@@ -82,7 +82,7 @@ function logout() {
 
 <style scoped>
 header {
-  background-color: #BC9669;
+  background-color: #3a4a74;
   height: 15vh;
 }
 
@@ -100,7 +100,7 @@ nav {
 
 nav a {
   text-decoration: none;
-  color: #000;
+  color: #ffffff;
 }
 
 .contact {
@@ -111,14 +111,14 @@ nav a {
 
 .contact p {
   margin: 0 1rem;
-  color: #000;
+  color: #ffffff;
   text-decoration: none;
 }
 
 .router-link {
   font-size: 1.25rem;
   text-decoration: none;
-  color: #000;
+  color: #ffffff;
 }
 
 .contact .router-link {
@@ -133,7 +133,7 @@ nav a {
 .user-info {
   margin: 0 1rem;
   font-size: 1rem;
-  color: #000;
+  color: #ffffff;
 }
 
 .dropdown {

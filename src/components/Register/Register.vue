@@ -79,7 +79,7 @@ const onSubmit = async (e: Event) => {
 
 h2 {
   text-align: center;
-  color: #8b572a;
+  color: #3a4a74;
 }
 
 .form-group {
@@ -101,12 +101,12 @@ input {
 }
 
 input:focus {
-  border-color: #8b572a;
+  border-color: #3a4a74;
 }
 
 .btn-register {
   padding: 10px;
-  background-color: #8b572a;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 4px;
@@ -115,6 +115,6 @@ input:focus {
 }
 
 .btn-register:hover {
-  background-color: #795045;
+  background-color: #4a5ba3;
 }
 </style>

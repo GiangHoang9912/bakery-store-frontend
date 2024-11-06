@@ -177,7 +177,7 @@ h2 {
 
 .quantity-control button {
   padding: 8px 15px;
-  background-color: #795548;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;
@@ -187,7 +187,7 @@ h2 {
 }
 
 .quantity-control button:hover {
-  background-color: #5d4037;
+  background-color: #3a4a74;
 }
 
 .pagination {
@@ -222,7 +222,7 @@ h2 {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #A87951;
+  border-top: 5px solid #5165a8;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

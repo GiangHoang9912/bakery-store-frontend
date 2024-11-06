@@ -61,7 +61,7 @@ const handleSubmit = async () => {
 /* Title style */
 h2 {
   font-size: 24px;
-  color: #a57b5b;
+  color: #3a4a74;
   margin-bottom: 40px;
   text-align: center;
 }
@@ -89,7 +89,7 @@ input {
 /* Button style */
 button {
   padding: 15px;
-  background-color: #a57b5b;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;
@@ -99,6 +99,6 @@ button {
 }
 
 button:hover {
-  background-color: #8b6049;
+  background-color: #455888;
 }
 </style>

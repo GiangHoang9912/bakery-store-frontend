@@ -92,8 +92,8 @@ onMounted(() => {
     </div>
 
     <div v-if="cartItems.length > 0" class="cart-summary">
-      <p class="total-price">Tổng thanh toán: {{ formatPrice(totalPrice) }}</p>
-      <button class="checkout-button" @click="handleCheckout">THANH TOÁN</button>
+      <p class="total-price">Tổng ĐẶT HÀNG: {{ formatPrice(totalPrice) }}</p>
+      <button class="checkout-button" @click="handleCheckout">ĐẶT HÀNG</button>
     </div>
   </div>
 </template>
@@ -111,7 +111,7 @@ onMounted(() => {
 
 h2 {
   font-size: 24px;
-  color: #a57b5b;
+  color: #3a4a74;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -171,7 +171,7 @@ h2 {
   margin-top: 15px;
   font-weight: bold;
   font-size: 18px;
-  color: #a57b5b;
+  color: #3a4a74;
 }
 
 /* Center the checkout button on the screen */
@@ -184,7 +184,7 @@ h2 {
 
 .checkout-button {
   padding: 10px 20px;
-  background-color: #a57b5b;
+  background-color: #3a4a74;
   color: white;
   border: none;
   border-radius: 5px;
@@ -194,7 +194,7 @@ h2 {
 }
 
 .checkout-button:hover {
-  background-color: #8b6049;
+  background-color: #3a4a74;
 }
 
 .empty-cart {
@@ -210,12 +210,12 @@ h2 {
 }
 
 .product-price {
-  color: #a57b5b;
+  color: #3a4a74;
   font-size: 16px;
 }
 
 .item-total {
-  color: #a57b5b;
+  color: #3a4a74;
   font-weight: bold;
 }
 

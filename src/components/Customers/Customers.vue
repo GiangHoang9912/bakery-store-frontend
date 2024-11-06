@@ -204,7 +204,7 @@ onMounted(() => {
 
 .title {
   font-size: 24px;
-  color: #A87951;
+  color: #5165a8;
   margin-bottom: 20px;
 }
 
@@ -266,7 +266,7 @@ onMounted(() => {
 }
 
 .page-btn:hover {
-  background-color: #A87951;
+  background-color: #5165a8;
   color: white;
 }
 
@@ -290,7 +290,7 @@ onMounted(() => {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  width: 300px;
+  width: 50%;
 }
 
 .edit-popup-content input {
@@ -321,7 +321,7 @@ onMounted(() => {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #A87951;
+  border-top: 5px solid #5165a8;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
